@@ -19,4 +19,3 @@ $conn = mysqli_connect($servername, $username, $password, $dbname) or die(mysqli
 mysqli_set_charset($conn, 'utf8mb4'); // mysqli extension
 // de 2e parameter is de collation voor de connectie (hoe tekst standaard moet worden gehanteerd)
 ?>
-?

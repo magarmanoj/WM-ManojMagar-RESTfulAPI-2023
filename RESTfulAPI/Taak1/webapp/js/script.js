@@ -49,8 +49,9 @@
         let url = baseApiAddress + "WerkerProjectadd.php";
 
         let voornaam = document.getElementById("naam").value;
-        let familienaam = document.getElementById("achternaam").value;
-        let specialisatie = document.getElementById("specialisatie").value;
+        let familienaam = document.getElementById("familienaam").value;
+        let specialisatieSelect = document.getElementById("specialisatie");
+        let specialisatie = specialisatieSelect.options[specialisatieSelect.selectedIndex].text;
 
         if (!voornaam || !familienaam || !specialisatie) {
             alert("Velden mogen niet leeg zijn!!");
