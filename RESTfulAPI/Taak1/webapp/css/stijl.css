@@ -8,9 +8,8 @@ input {
     color: black;
     margin-top: 0.25em;
 }
+
 .button {
-    background-color: white;
-    color: black;
     border: solid 1px black;
     width: 10em;
     display: inline-block;
@@ -20,8 +19,8 @@ input {
 }
 
 .button:hover {
-    background-color: black; 
-    color: white; 
+    background-color: black;
+    color: white;
 }
 
 
@@ -36,15 +35,27 @@ input {
     height: 1.6em;
     max-width: 600px;
     box-sizing: border-box;
-  
-  }
-  
-  .rij span {
+}
+
+.rij span {
     display: block;
     float: left;
-    width: 25%;
-    overflow: word-wrap;
+    width: 20%;
     padding: 0.1em;
     box-sizing: border-box;
-  
-  }
+    max-width: 100%; /* Ensure the content doesn't exceed the width of the span */
+    overflow: hidden; /* Hide any content that overflows the span */
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
+    text-overflow: ellipsis;
+    
+}
+
+#alert {
+    background-color: hsl(238deg 58% 42%);
+    color: hsl(0, 0%, 100%);
+    max-width: 45em;
+    padding: 0.25em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

@@ -1,4 +1,4 @@
-(function (){
+(function () {
     "use strict";
     let baseApiAddress = "https://manojmagar.be/RESTfulAPI/Taak1/api/";
 
@@ -11,72 +11,74 @@
     };
 
     function getApi() {
-		// de producten van de server opvragen en weergeven dmv de alerter functie
-		let url = baseApiAddress + "WerkerProjectget.php";
+        // de producten van de server opvragen en weergeven dmv de alerter functie
+        let url = baseApiAddress + "WerkerProjectget.php";
 
-		// test de api
-		fetch(url)
-			.then(function(response) {
+        // test de api
+        fetch(url)
+            .then(function (response) {
                 console.log(response);
-				return response.json();
-			})
-			.then(function(responseData){
-				// de verwerking van de data
-				var list = responseData.data;
+                return response.json();
+            })
+            .then(function (responseData) {
+                // de verwerking van de data
+                var list = responseData.data;
 
                 if (list.length > 0) {
-					// er zit minstens 1 item in list, we geven dit ook onmiddelijk weer
-					var tLijst = `<span class="rij btn"><span>Project naam</span><span>Voornaam</span><span>Familienaam</span><span>Specialisatie</span></span>`;
-					for (var i = 0; i < list.length; i++) {
-						tLijst += `<span class="rij"><span>${ list[i].naam }</span><span>${ list[i].voornaam }</span><span>${ list[i].familienaam }</span><span>${ list[i].specialisatie }</span></span>`;
-					}
-					tLijst += "<br>";
+                    // er zit minstens 1 item in list, we geven dit ook onmiddelijk weer
+                    var tLijst = `<span class="rij btn"><span>Project naam</span><span>Voornaam</span><span>Familienaam</span><span>Specialisatie</span><span>....</span></span>`;
+                    for (var i = 0; i < list.length; i++) {
+                        tLijst += `<span class="rij"><span>${list[i].naam}</span><span>${list[i].voornaam}</span><span>${list[i].familienaam}</span><span>${list[i].specialisatie}
+                        </span><span><button type="button" data-id="${list[i].project_id}" class="btnRemoveProduct">X</button></span></span></span></span></span></span>`;
+                    }
+                    tLijst += "<br>";
 
-					alerter(tLijst);
-				} else {
-					alerter("Servertijd kon niet opgevraagd worden");
-				}
+                    alerter(tLijst);
+                } else {
+                    alerter("Servertijd kon niet opgevraagd worden");
+                }
 
-			})
-			.catch(function(error) {
-				// verwerk de fout
-				alertEl.innerHTML = "fout : " + error;
-			});
-	}
+            })
+            .catch(function (error) {
+                // verwerk de fout
+                alertEl.innerHTML = "fout : " + error;
+            });
+    }
 
     function getApiProjects() {
-		// de producten van de server opvragen en weergeven dmv de alerter functie
-		let url = baseApiAddress + "Projectsget.php";
+        // de producten van de server opvragen en weergeven dmv de alerter functie
+        let url = baseApiAddress + "Projectsget.php";
 
-		// test de api
-		fetch(url)
-			.then(function(response) {
+        // test de api
+        fetch(url)
+            .then(function (response) {
                 console.log(response);
-				return response.json();
-			})
-			.then(function(responseData){
-				// de verwerking van de data
-				var list = responseData.data;
+                return response.json();
+            })
+            .then(function (responseData) {
+                // de verwerking van de data
+                var list = responseData.data;
 
                 if (list.length > 0) {
-					// er zit minstens 1 item in list, we geven dit ook onmiddelijk weer
-					var tLijst = `<span class="rij btn"><span>project id</span><span>project naam</span><span>code</span><span>beschrijving</span></span>`;
-					for (var i = 0; i < list.length; i++) {
-						tLijst += `<span class="rij"><span>${ list[i].project_id }</span><span>${ list[i].naam }</span><span>${ list[i].code }</span><span>${ list[i].beschrijving }</span></span>`;
-					}
-					tLijst += "<br>";
+                    // er zit minstens 1 item in list, we geven dit ook onmiddelijk weer
+                    var tLijst = `<span class="rij btn"><span>project id</span><span>project naam</span><span>code</span><span>beschrijving</span><span>....</span></span>`;
+                    for (var i = 0; i < list.length; i++) {
+                        tLijst += `<span class="rij"><span>${list[i].project_id}</span><span>${list[i].naam}</span><span>${list[i].code}</span><span>${list[i].beschrijving}
+                        </span><span><button type="button" data-id="${list[i].project_id}" class="btnRemoveProduct">X</button></span></span></span></span>`;
+                    }
+                    tLijst += "<br>";
 
-					alerter(tLijst);
-				} else {
-					alerter("Servertijd kon niet opgevraagd worden");
-				}
+                    alerter(tLijst);
+                } else {
+                    alerter("Servertijd kon niet opgevraagd worden");
+                }
 
-			})
-			.catch(function(error) {
-				// verwerk de fout
-				alertEl.innerHTML = "fout : " + error;
-			});
-	}
+            })
+            .catch(function (error) {
+                // verwerk de fout
+                alertEl.innerHTML = "fout : " + error;
+            });
+    }
 
     function getApiAdd() {
 
@@ -93,7 +95,7 @@
 
         if (!voornaam || !familienaam || !specialisatie || !projectnaam || !code || !omschrijving) {
             alert("Velden mogen niet leeg zijn!!");
-            return; 
+            return;
         }
 
         opties.body = JSON.stringify({
@@ -103,7 +105,7 @@
             naam: projectnaam,
             code: code,
             beschrijving: omschrijving
-    });
+        });
 
         fetch(url, opties)
             .then(function (response) {
@@ -111,20 +113,20 @@
             })
     }
 
-    document.getElementById("btnToonMedewerkPerProject").addEventListener("click", function(){
+    document.getElementById("btnToonMedewerkPerProject").addEventListener("click", function () {
         getApi();
     })
 
-    document.getElementById("btnSubmit").addEventListener("click", function(e){
+    document.getElementById("btnSubmit").addEventListener("click", function (e) {
         e.preventDefault();
         getApiAdd();
     })
 
-    document.getElementById("btnLijstProjecten").addEventListener("click", function(){
+    document.getElementById("btnLijstProjecten").addEventListener("click", function () {
         getApiProjects();
     })
 
-    function alerter(message){
+    function alerter(message) {
         alertEl.innerHTML = message;
     }
 })();
