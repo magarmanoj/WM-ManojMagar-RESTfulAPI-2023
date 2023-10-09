@@ -10,7 +10,7 @@ require 'inc/dbcon.php';
 require 'inc/base.php';
 
 // PRODUCTENget
-// --- "Get" alle producten  
+// --- "Get" de lijst met medewerkers per project
 
 $sql="Select p.naam, m.voornaam, m.familienaam, m.specialisatie
 FROM project_medewerker pm

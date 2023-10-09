@@ -45,21 +45,21 @@
 	}
 
     function getApiAdd() {
+        if (!voornaam || !familienaam || !specialisatie) {
+            alert("All fields are required. Please fill in all fields.");
+            return; 
+        }
         let url = baseApiAddress + "WerkerProjectadd.php";
+
         opties.body = JSON.stringify({
             voornaam: document.getElementById("naam").value,
             familienaam: document.getElementById("achternaam").value,
-            specialisatie: document.getElementById("specialisatie").value,
-
-
-            naam: document.getElementById("procetnaam").value,
-            code: document.getElementById("code").value,
-            beschrijving: document.getElementById("omschrijving").value
+            specialisatie: document.getElementById("specialisatie").value
         });
 
         fetch(url, opties)
             .then(function (response) {
-                return response.JSON();
+                return response.json();
             })
     }
 
