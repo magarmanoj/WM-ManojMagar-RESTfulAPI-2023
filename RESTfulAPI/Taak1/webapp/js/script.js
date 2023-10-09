@@ -69,6 +69,14 @@
                     tLijst += "<br>";
 
                     alerter(tLijst);
+                    const btnRemoveProductButtons = document.querySelectorAll('.btnRemoveProduct');
+                    btnRemoveProductButtons.forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        // Retrieve the data-id attribute value for the clicked button
+                        const projectId = this.getAttribute('data-id');
+                        deleteProject(projectId);
+                    });
+                });
                 } else {
                     alerter("Servertijd kon niet opgevraagd worden");
                 }
@@ -79,6 +87,37 @@
                 alertEl.innerHTML = "fout : " + error;
             });
     }
+
+
+
+    function deleteProject(projectId) {
+        let url = baseApiAddress + "Delete.php";
+        opties.body = JSON.stringify({
+            project_id: projectId,
+        })
+
+        fetch(url, opties)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (responseData) {
+                // de verwerking van de data
+                const list = responseData.data;
+
+                if (Object.keys(list).length > 0) {
+                    // er zit slechts 1 item in de lijst, we geven dit ook onmiddelijk weer
+                    alerter("Servertijd : " + list.servertime);
+                } else {
+                    alerter("Servertijd kon niet opgevraagd worden");
+                }
+
+            })
+            .catch(function (error) {
+                // verwerk de fout
+                alerter("<br>API Fout. Probeer later nog eens.<br>(" + error + ")");
+            });
+    }
+
 
     function getApiAdd() {
 
@@ -112,6 +151,7 @@
                 return response.json();
             })
     }
+
 
     document.getElementById("btnToonMedewerkPerProject").addEventListener("click", function () {
         getApi();
