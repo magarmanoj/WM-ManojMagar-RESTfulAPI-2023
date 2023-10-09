@@ -53,7 +53,11 @@
         let specialisatieSelect = document.getElementById("specialisatie");
         let specialisatie = specialisatieSelect.options[specialisatieSelect.selectedIndex].text;
 
-        if (!voornaam || !familienaam || !specialisatie) {
+        let projectnaam = document.getElementById("projectnaam").value;
+        let code = document.getElementById("code").value;
+        let omschrijving = document.getElementById("omschrijving").value;
+
+        if (!voornaam || !familienaam || !specialisatie || !projectnaam || !code || !omschrijving) {
             alert("Velden mogen niet leeg zijn!!");
             return; 
         }
@@ -61,7 +65,10 @@
         opties.body = JSON.stringify({
             voornaam: voornaam,
             familienaam: familienaam,
-            specialisatie: specialisatie
+            specialisatie: specialisatie,
+            naam: projectnaam,
+            code: code,
+            beschrijving: omschrijving
     });
 
         fetch(url, opties)
