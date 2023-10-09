@@ -45,17 +45,23 @@
 	}
 
     function getApiAdd() {
-        if (!voornaam || !familienaam || !specialisatie) {
-            alert("All fields are required. Please fill in all fields.");
-            return; 
-        }
+
         let url = baseApiAddress + "WerkerProjectadd.php";
 
+        let voornaam = document.getElementById("naam").value;
+        let familienaam = document.getElementById("achternaam").value;
+        let specialisatie = document.getElementById("specialisatie").value;
+
+        if (!voornaam || !familienaam || !specialisatie) {
+            alert("Velden mogen niet leeg zijn!!");
+            return; 
+        }
+
         opties.body = JSON.stringify({
-            voornaam: document.getElementById("naam").value,
-            familienaam: document.getElementById("achternaam").value,
-            specialisatie: document.getElementById("specialisatie").value
-        });
+            voornaam: voornaam,
+            familienaam: familienaam,
+            specialisatie: specialisatie
+    });
 
         fetch(url, opties)
             .then(function (response) {
