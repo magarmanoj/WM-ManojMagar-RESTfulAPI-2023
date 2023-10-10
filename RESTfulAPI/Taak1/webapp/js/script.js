@@ -46,7 +46,6 @@
 
         fetch(url)
             .then(function (response) {
-                console.log(response);
                 return response.json();
             })
             .then(function (responseData) {
@@ -70,6 +69,7 @@
                     tLijst += "<br>";
 
                     alerter(tLijst);
+                    editHandlersMedewerker(list)
                     document.addEventListener("click", function (event) {
                         if (event.target.classList.contains("btnRemoveMedewerker")) {
                             const medewerkerId = event.target.getAttribute("data-id");
@@ -231,6 +231,68 @@
             });
     }
 
+
+    function editHandlersMedewerker(list) {
+        const editButtons = document.querySelectorAll('.btnEdit');
+        const saveButtons = document.querySelectorAll('.btnSave');
+    
+        editButtons.forEach((button, index) => {
+            button.addEventListener('click', function () {
+                const row = button.closest('.rij');
+                const editFields = row.querySelectorAll('.editable');
+                
+                editFields.forEach(field => {
+                    field.contentEditable = 'true';
+                });
+                
+                button.style.display = 'none';
+                saveButtons[index].style.display = 'block';
+            });
+        });
+    
+        saveButtons.forEach((button, index) => {
+            button.addEventListener('click', function () {
+                const row = button.closest('.rij');
+                const editFields = row.querySelectorAll('.editable');
+                
+                const updatedNaam = editFields[0].innerText;
+                const updatedfamilienaam = editFields[1].innerText;
+                const updatedSpecialisatie = editFields[2].innerText;
+                const medewerkerId = list[index].project_id;
+    
+                updateMedewerker(updatedNaam, updatedfamilienaam, updatedSpecialisatie, medewerkerId);
+    
+                editFields.forEach(field => {
+                    field.contentEditable = 'false';
+                });
+    
+                button.style.display = 'none';
+                editButtons[index].style.display = 'block';
+            });
+        });
+    }
+    
+
+    function updateMedewerker(updatedNaam, updatedfamilienaam, updatedSpecialisatie, medewerkerId) {
+        let url = baseApiAddress + "UpdateMedewerker.php";
+        opties.body = JSON.stringify({
+            voornaam: updatedNaam,
+            familienaam: updatedfamilienaam,
+            specialisatie: updatedSpecialisatie,
+            medewerker_id: medewerkerId
+        });
+        fetch(url, opties)
+            .then(function (response) {
+                if (response.ok) {
+                    console.log("Value updated successfully.");
+                } else {
+                    console.error("Failed to update value.");
+                }
+            })
+            .catch(function (error) {
+                console.error("Network error: " + error);
+            });
+    }
 
     function deleteProject(projectId) {
         let url = baseApiAddress + "Delete.php";
