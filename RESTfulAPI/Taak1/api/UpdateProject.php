@@ -9,7 +9,7 @@ define ('INDEX', true);
 require 'inc/dbcon.php';
 require 'inc/base.php';
 
-// add projecten
+// update projecten
 if(!$stmtproject = $conn->prepare("update projects set naam = ?, code = ?, beschrijving = ? WHERE project_id = ?")){
     die('{"error":"Prepared Statement failed on prepare","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
 }
@@ -20,7 +20,6 @@ if(!$stmtproject -> bind_param("sssi", htmlentities($postvars['naam']), $postvar
 $stmtproject -> execute();
 
 if($conn->affected_rows == 0) {
-    // add failed
     $stmtproject -> close();
     die('{"error":"Prepared Statement failed on execute : no rows affected","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
 }
