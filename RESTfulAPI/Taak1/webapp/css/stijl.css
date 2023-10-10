@@ -61,3 +61,16 @@ input {
     flex-wrap: wrap;
     justify-content: space-between;
 }
+#alert2 {
+    background-color: hsl(141, 64%, 25%);
+    color: hsl(0, 0%, 0%);
+    max-width: 45em;
+    padding: 0.25em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#btnDetails {
+    display: none;
+}

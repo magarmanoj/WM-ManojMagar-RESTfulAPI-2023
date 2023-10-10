@@ -3,6 +3,7 @@
     let baseApiAddress = "https://manojmagar.be/RESTfulAPI/Taak1/api/";
 
     let alertEl = document.getElementById("alert");
+    let alertEl2 = document.getElementById("alert2");
     let opties = {
         method: "POST",
         mode: "cors",
@@ -133,6 +134,37 @@
     }
 
 
+    function getApiDetails(){
+        let url = baseApiAddress + "DetailsProjectget.php";
+
+        fetch(url)
+            .then(function (response) {
+                console.log(response);
+                return response.json();
+            })
+            .then(function (responseData) {
+                var list = responseData.data;
+
+                if (list.length > 0) {
+                    var tLijst = `<span class="rij btn"><span>Project naam</span><span>code</span><span>beschrijving</span></span>`;
+                    for (var i = 0; i < list.length; i++) {
+                        tLijst += `<span class="rij"><span>${list[i].naam}</span>
+                            <span>${list[i].code}</span>
+                            <span>${list[i].beschrijving}</span>
+                            </span></span>
+                        </span>`;
+                    }
+                    tLijst += "<br>";
+
+                    alerter(tLijst);
+                } else {
+                    alerter("Servertijd kon niet opgevraagd worden");
+                }
+            })
+            .catch(function (error) {
+                alertEl2.innerHTML = "fout : " + error;
+            });
+    }
     // Chatgpt gebruikt voor het hulp
     function editHandlers(list) {
         const editButtons = document.querySelectorAll('.btnEdit');
@@ -358,8 +390,13 @@
     })
 
 
+    document.getElementById("btnDetails").addEventListener("click", function () {
+        getApiDetails();
+    })
+
     document.getElementById("btnToonMedewerkPerProject").addEventListener("click", function () {
         getApi();
+        document.getElementById("btnDetails").style.display = "block"; 
     })
 
     document.getElementById("btnAddProjects").addEventListener("click", function (e) {
@@ -374,13 +411,19 @@
 
     document.getElementById("btnLijstProjecten").addEventListener("click", function () {
         getApiProjects();
+        document.getElementById("btnDetails").style.display = "none"; 
+
     })
 
     document.getElementById("btnLijstMedewerker").addEventListener("click", function () {
         getApiMedewerker();
+        document.getElementById("btnDetails").style.display = "none"; 
     })
 
     function alerter(message) {
         alertEl.innerHTML = message;
+    }
+    function alerter(message) {
+        alertEl2.innerHTML = message;
     }
 })();
