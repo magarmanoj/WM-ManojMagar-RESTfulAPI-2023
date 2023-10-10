@@ -9,14 +9,11 @@ define('INDEX', true);
 require 'inc/dbcon.php';
 require 'inc/base.php';
 
-
-$projectId = $_POST['project_id'];
-
 if (!$stmt = $conn->prepare("delete from projects where project_id = ?")) {
     die('{"error":"Prepared Statement failed on prepare","errNo":"' . json_encode($conn->errno) . '","mysqlError":"' . json_encode($conn->error) . '","status":"fail"}');
 }
 
-if (!$stmt->bind_param("i", $projectId)) {
+if (!$stmt->bind_param("i", htmlentities($postvars['project_id']))) {
     die('{"error":"Prepared Statement bind failed on bind","errNo":"' . json_encode($stmt->errno) . '","mysqlError":"' . json_encode($stmt->error) . '","status":"fail"}');
 }
 
@@ -27,9 +24,7 @@ if ($stmt->affected_rows > 0) {
     // Deletion was successful
     $stmt->close();
     die('{"data":"ok","message":"Project deleted successfully","status":"ok"}');
-} else {
-    // No rows affected, deletion failed
-    $stmt->close();
-    die('{"error":"No rows affected, deletion failed","status":"fail"}');
 }
+$stmt->close();
+die('{"error":"No rows affected, deletion failed","status":"fail"}');
 ?>
