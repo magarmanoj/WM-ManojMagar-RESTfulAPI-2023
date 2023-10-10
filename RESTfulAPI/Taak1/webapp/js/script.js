@@ -45,6 +45,40 @@
             });
     }
 
+    function getApiMedewerker(){
+        let url = baseApiAddress + "Medewerkerget.php";
+
+        // test de api
+        fetch(url)
+            .then(function (response) {
+                console.log(response);
+                return response.json();
+            })
+            .then(function (responseData) {
+                // de verwerking van de data
+                var list = responseData.data;
+
+                if (list.length > 0) {
+                    // er zit minstens 1 item in list, we geven dit ook onmiddelijk weer
+                    var tLijst = `<span class="rij btn"><span>Id</span><span>Voornaam</span><span>Familienaam</span><span>Specialisatie</span></span>`;
+                    for (var i = 0; i < list.length; i++) {
+                        tLijst += `<span class="rij"><span>${list[i].medewerker_id}</span><span>${list[i].voornaam}</span><span>${list[i].familienaam}</span><span>${list[i].specialisatie}
+                        </span></span></span></span></span></span>`;
+                    }
+                    tLijst += "<br>";
+
+                    alerter(tLijst);
+                } else {
+                    alerter("Servertijd kon niet opgevraagd worden");
+                }
+
+            })
+            .catch(function (error) {
+                // verwerk de fout
+                alertEl.innerHTML = "fout : " + error;
+            });
+
+    }
 
     // Code uit les2 voorbeeld oefening
     function getApiProjects() {
@@ -62,7 +96,7 @@
 
                 if (list.length > 0) {
                     // er zit minstens 1 item in list, we geven dit ook onmiddelijk weer
-                    var tLijst = `<span class="rij btn"><span>project id</span><span>project naam</span><span>code</span><span>beschrijving</span><span>Actions</span></span>`;
+                    var tLijst = `<span class="rij btn"><span>project id</span><span>project naam</span><span>code</span><span>beschrijving</span><span>Actions</span><span>....</span></span>`;
                     for (var i = 0; i < list.length; i++) {
                         tLijst += `<span class="rij">
                             <span>${list[i].project_id}</span>
@@ -73,13 +107,13 @@
                                 <button type="button" class="btnEdit">Edit</button>
                                 <button type="button" class="btnSave" style="display:none;">Save</button>
                             </span>
+                            <button type="button" data-id="${list[i].project_id}" class="btnRemoveProduct">X</button>
                         </span>`;
                     }
                     tLijst += "<br>";
-
                     alerter(tLijst);
 
-                    setupEditingHandlers(list);
+                    editHandlers(list);
 
                     document.addEventListener("click", function (event) {
                         if (event.target.classList.contains("btnRemoveProduct")) {
@@ -98,7 +132,8 @@
     }
 
 
-    function setupEditingHandlers(list) {
+    // Chatgpt gebruikt voor het hulp
+    function editHandlers(list) {
         const editButtons = document.querySelectorAll('.btnEdit');
         const saveButtons = document.querySelectorAll('.btnSave');
     
@@ -170,26 +205,19 @@
         });
 
         fetch(url, opties)
-            .then(function (response) {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then(function (responseData) {
-                console.log(responseData);
-                if (responseData.status == "ok") {
-                    // Deletion was successful
-                    alerter("Project with ID " + projectId + " deleted successfully");
-                } else {
-                    // Deletion failed
-                    alerter("Deletion of project with ID " + projectId + " failed");
-                }
-            })
-            .catch(function (error) {
-                // Handle errors
-                alerter("API Error. Please try again later. (" + error + ")");
-            });
+        .then(function (response) {
+            if (response.status === 200) {
+                // HTTP status 200 indicates a successful deletion
+                alerter("Project with ID " + projectId + " deleted successfully");
+            } else {
+                // Any other HTTP status indicates a failure
+                alerter("Deletion of project with ID " + projectId + " failed");
+            }
+        })
+        .catch(function (error) {
+            // Handle errors
+            alerter("API Error. Please try again later. (" + error + ")");
+        });
     }
 
     //add medewerkers
@@ -326,6 +354,10 @@
 
     document.getElementById("btnLijstProjecten").addEventListener("click", function () {
         getApiProjects();
+    })
+
+    document.getElementById("btnLijstMedewerker").addEventListener("click", function () {
+        getApiMedewerker();
     })
 
     function alerter(message) {
