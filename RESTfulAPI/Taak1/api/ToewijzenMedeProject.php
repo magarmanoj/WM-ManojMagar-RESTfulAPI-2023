@@ -9,7 +9,7 @@ define ('INDEX', true);
 require 'inc/dbcon.php';
 require 'inc/base.php';
 
-// add projecten
+// Medewerker toewijzen naar een project
 if(!$stmtproject = $conn->prepare("insert into project_medewerker (medewerker_id, project_id) values (?,?)")){
     die('{"error":"Prepared Statement failed on prepare","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
 }
@@ -20,7 +20,7 @@ if(!$stmtproject -> bind_param("ii", htmlentities($postvars['medewerker_id']), $
 $stmtproject -> execute();
 
 if($conn->affected_rows == 0) {
-    // add failed
+    // toewijzen gefaald
     $stmtproject -> close();
     die('{"error":"Prepared Statement failed on execute : no rows affected","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
 }

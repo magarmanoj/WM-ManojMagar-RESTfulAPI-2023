@@ -26,10 +26,10 @@
 
                 if (list.length > 0) {
                     // er zit minstens 1 item in list, we geven dit ook onmiddelijk weer
-                    var tLijst = `<span class="rij btn"><span>Project naam</span><span>Voornaam</span><span>Familienaam</span><span>Specialisatie</span><span>....</span></span>`;
+                    var tLijst = `<span class="rij btn"><span>Project naam</span><span>Voornaam</span><span>Familienaam</span><span>Specialisatie</span></span>`;
                     for (var i = 0; i < list.length; i++) {
                         tLijst += `<span class="rij"><span>${list[i].naam}</span><span>${list[i].voornaam}</span><span>${list[i].familienaam}</span><span>${list[i].specialisatie}
-                        </span><span><button type="button" data-id="${list[i].project_id}" class="btnRemoveProduct">X</button></span></span></span></span></span></span>`;
+                        </span></span></span></span></span></span>`;
                     }
                     tLijst += "<br>";
 

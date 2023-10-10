@@ -21,7 +21,7 @@ if(!$stmtproject -> bind_param("ii", htmlentities($postvars['medewerker_id']), $
 $stmtproject -> execute();
 
 if($conn->affected_rows == 0) {
-    // add failed
+    // verwijder failed
     $stmtproject -> close();
     die('{"error":"Prepared Statement failed on execute : no rows affected","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
 }
