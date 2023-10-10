@@ -45,6 +45,8 @@
             });
     }
 
+
+    // Code uit les2 voorbeeld oefening
     function getApiProjects() {
         // de producten van de server opvragen en weergeven dmv de alerter functie
         let url = baseApiAddress + "Projectsget.php";
@@ -52,35 +54,31 @@
         // test de api
         fetch(url)
             .then(function (response) {
-                console.log(response);
                 return response.json();
             })
             .then(function (responseData) {
                 // de verwerking van de data
-                var list = responseData.data;
+                let list = responseData.data;
 
                 if (list.length > 0) {
                     // er zit minstens 1 item in list, we geven dit ook onmiddelijk weer
                     var tLijst = `<span class="rij btn"><span>project id</span><span>project naam</span><span>code</span><span>beschrijving</span><span>....</span></span>`;
                     for (var i = 0; i < list.length; i++) {
-                        tLijst += `<span class="rij"><span>${list[i].project_id}</span><span>${list[i].naam}</span><span>${list[i].code}</span><span>${list[i].beschrijving}
-                        </span><span><button type="button" data-id="${list[i].project_id}" class="btnRemoveProduct">X</button></span></span></span></span>`;
+                        tLijst += `<span class="rij"><span>${list[i].project_id}</span><span contentEditable="true">${list[i].naam}</span><span contentEditable="true">${list[i].code}</span><span contentEditable="true">${list[i].beschrijving}</span><span><button type="button" data-id="${list[i].project_id}" class="btnRemoveProduct">X</button></span></span></span></span>`;
                     }
                     tLijst += "<br>";
 
                     alerter(tLijst);
-                    const btnRemoveProductButtons = document.querySelectorAll('.btnRemoveProduct');
-                    btnRemoveProductButtons.forEach(function (button) {
-                    button.addEventListener('click', function () {
-                        // Retrieve the data-id attribute value for the clicked button
-                        const projectId = this.getAttribute('data-id');
-                        deleteProject(projectId);
+
+                    document.addEventListener("click", function (event) {
+                        if (event.target.classList.contains("btnRemoveProduct")) {
+                            const projectId = event.target.getAttribute("data-id");
+                            deleteProject(projectId);
+                        }
                     });
-                });
                 } else {
                     alerter("Servertijd kon niet opgevraagd worden");
                 }
-
             })
             .catch(function (error) {
                 // verwerk de fout
@@ -92,35 +90,36 @@
 
     function deleteProject(projectId) {
         let url = baseApiAddress + "Delete.php";
+
         opties.body = JSON.stringify({
-            project_id: projectId,
-        })
+            project_id: projectId
+        });
 
         fetch(url, opties)
             .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
                 return response.json();
             })
             .then(function (responseData) {
-                // de verwerking van de data
-                const list = responseData.data;
-
-                if (Object.keys(list).length > 0) {
-                    // er zit slechts 1 item in de lijst, we geven dit ook onmiddelijk weer
-                    alerter("Servertijd : " + list.servertime);
+                console.log(responseData);
+                if (responseData.status == "ok") {
+                    // Deletion was successful
+                    alerter("Project with ID " + projectId + " deleted successfully");
                 } else {
-                    alerter("Servertijd kon niet opgevraagd worden");
+                    // Deletion failed
+                    alerter("Deletion of project with ID " + projectId + " failed");
                 }
-
             })
             .catch(function (error) {
-                // verwerk de fout
-                alerter("<br>API Fout. Probeer later nog eens.<br>(" + error + ")");
+                // Handle errors
+                alerter("API Error. Please try again later. (" + error + ")");
             });
     }
 
 
-    function getApiAdd() {
-
+    function getApiAddMedewerkers() {
         let url = baseApiAddress + "WerkerProjectadd.php";
 
         let voornaam = document.getElementById("naam").value;
@@ -128,19 +127,35 @@
         let specialisatieSelect = document.getElementById("specialisatie");
         let specialisatie = specialisatieSelect.options[specialisatieSelect.selectedIndex].text;
 
+        if (!voornaam || !familienaam || !specialisatie) {
+            alert("Velden mogen niet leeg zijn!!");
+            return;
+        }
+        opties.body = JSON.stringify({
+            voornaam: voornaam,
+            familienaam: familienaam,
+            specialisatie: specialisatie,
+        });
+
+        fetch(url, opties)
+            .then(function (response) {
+                return response.json();
+            })
+    }
+
+    function getApiAddProjects() {
+        let url = baseApiAddress + "Projectsadd.php";
+
         let projectnaam = document.getElementById("projectnaam").value;
         let code = document.getElementById("code").value;
         let omschrijving = document.getElementById("omschrijving").value;
 
-        if (!voornaam || !familienaam || !specialisatie || !projectnaam || !code || !omschrijving) {
+        if (!projectnaam || !code || !omschrijving) {
             alert("Velden mogen niet leeg zijn!!");
             return;
         }
 
         opties.body = JSON.stringify({
-            voornaam: voornaam,
-            familienaam: familienaam,
-            specialisatie: specialisatie,
             naam: projectnaam,
             code: code,
             beschrijving: omschrijving
@@ -152,14 +167,28 @@
             })
     }
 
+    function saveChange() {
+        const content = document.querySelectorAll('.rij');
+
+
+    }
+
+    document.getElementById("btnSave").addEventListener("click", function () {
+        saveChange();
+    })
 
     document.getElementById("btnToonMedewerkPerProject").addEventListener("click", function () {
         getApi();
     })
 
-    document.getElementById("btnSubmit").addEventListener("click", function (e) {
+    document.getElementById("btnAddProjects").addEventListener("click", function (e) {
         e.preventDefault();
-        getApiAdd();
+        getApiAddProjects();
+    })
+
+    document.getElementById("btnAddMedewerkers").addEventListener("click", function (e) {
+        e.preventDefault();
+        getApiAddMedewerkers();
     })
 
     document.getElementById("btnLijstProjecten").addEventListener("click", function () {

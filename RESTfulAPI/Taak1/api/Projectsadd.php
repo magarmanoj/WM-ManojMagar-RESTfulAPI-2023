@@ -9,21 +9,21 @@ define ('INDEX', true);
 require 'inc/dbcon.php';
 require 'inc/base.php';
 
-// add medewerkers
-if(!$stmt = $conn->prepare("insert into medewerker (voornaam, familienaam, specialisatie) values (?,?,?)")){
+// add projecten
+if(!$stmtproject = $conn->prepare("insert into projects (naam, code, beschrijving) values (?,?,?)")){
     die('{"error":"Prepared Statement failed on prepare","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
 }
 
-if(!$stmt -> bind_param("sss", htmlentities($postvars['voornaam']), $postvars['familienaam'], $postvars['specialisatie'])){
+if(!$stmtproject -> bind_param("sss", htmlentities($postvars['naam']), $postvars['code'], $postvars['beschrijving'])){
     die('{"error":"Prepared Statement bind failed on bind","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
 }
-$stmt -> execute();
+$stmtproject -> execute();
 
 if($conn->affected_rows == 0) {
     // add failed
-    $stmt -> close();
+    $stmtproject -> close();
     die('{"error":"Prepared Statement failed on execute : no rows affected","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
 }
-$stmt -> close();
+$stmtproject -> close();
 die('{"data":"ok","message":"Record added successfully","status":"ok"}');
 ?>

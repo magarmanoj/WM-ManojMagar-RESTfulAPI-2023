@@ -10,7 +10,8 @@
 
     </div>
 
-    <form action="" method="post">
+    <input type="save" name="save" id="btnSave" value="Save">
+    <form action="" id="form" method="post">
         <p>Medewerker</p>
         Voornaam: <input type="text" name="name" required id="naam">
         Familienaam: <input type="text" name="familienaam" required id="familienaam">
@@ -23,14 +24,17 @@
             <option value="6"> Digital consultant</option>
             <option value="7"> AI & data engineer</option>
         </select>
+        <input type="button" name="addMedewerker" id="btnAddMedewerkers" value=" Add Medewerkers">
 
         <p>Project</p>
         naam: <input type="text" name="projectnaam" required id="projectnaam">
         code: <input type="text" name="code" required id="code">
         Omschrijving: <input name="omschrijving" required id="omschrijving">
+        <input type="button" name="addProjects" id="btnAddProjects" value="Add projects">
+        
     </form>
 
-    <input type="submit" name="submit" id="btnSubmit">
+    
     <span class="button btn" id="btnToonMedewerkPerProject">Medewerker/project</span>
     <span class="button btn" id="btnLijstProjecten"> Lijst van projecten</span>
 

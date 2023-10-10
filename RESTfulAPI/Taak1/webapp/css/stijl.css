@@ -7,6 +7,8 @@ input {
     border-color: aqua;
     color: black;
     margin-top: 0.25em;
+    width: 10em;
+    padding: 0.2em;
 }
 
 .button {
@@ -43,9 +45,9 @@ input {
     width: 20%;
     padding: 0.1em;
     box-sizing: border-box;
-    max-width: 100%; /* Ensure the content doesn't exceed the width of the span */
-    overflow: hidden; /* Hide any content that overflows the span */
-    white-space: nowrap; /* Prevent text from wrapping to the next line */
+    max-width: 100%; 
+    overflow: hidden; 
+    white-space: nowrap; 
     text-overflow: ellipsis;
     
 }
