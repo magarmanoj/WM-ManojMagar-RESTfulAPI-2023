@@ -27,8 +27,8 @@ input {
 
 
 .rij {
-    background-color: hsl(238deg, 50%, 60%);
-    border: 1px solid hsl(238deg, 49%, 47%);
+    background-color: hsl(159, 57%, 71%);
+    border: 1px solid hsl(155, 51%, 44%);
     border-style: none none solid none;
     margin: 0;
     padding: 0.1em;
@@ -53,8 +53,8 @@ input {
 }
 
 #alert {
-    background-color: hsl(238deg 58% 42%);
-    color: hsl(0, 0%, 100%);
+    background-color: hsl(141, 64%, 25%);
+    color: hsl(0, 0%, 0%);
     max-width: 45em;
     padding: 0.25em;
     display: flex;

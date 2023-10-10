@@ -62,13 +62,24 @@
 
                 if (list.length > 0) {
                     // er zit minstens 1 item in list, we geven dit ook onmiddelijk weer
-                    var tLijst = `<span class="rij btn"><span>project id</span><span>project naam</span><span>code</span><span>beschrijving</span><span>....</span></span>`;
+                    var tLijst = `<span class="rij btn"><span>project id</span><span>project naam</span><span>code</span><span>beschrijving</span><span>Actions</span></span>`;
                     for (var i = 0; i < list.length; i++) {
-                        tLijst += `<span class="rij"><span>${list[i].project_id}</span><span contentEditable="true">${list[i].naam}</span><span contentEditable="true">${list[i].code}</span><span contentEditable="true">${list[i].beschrijving}</span><span><button type="button" data-id="${list[i].project_id}" class="btnRemoveProduct">X</button></span></span></span></span>`;
+                        tLijst += `<span class="rij">
+                            <span>${list[i].project_id}</span>
+                            <span class="editable">${list[i].naam}</span>
+                            <span class="editable">${list[i].code}</span>
+                            <span class="editable">${list[i].beschrijving}</span>
+                            <span>
+                                <button type="button" class="btnEdit">Edit</button>
+                                <button type="button" class="btnSave" style="display:none;">Save</button>
+                            </span>
+                        </span>`;
                     }
                     tLijst += "<br>";
 
                     alerter(tLijst);
+
+                    setupEditingHandlers(list);
 
                     document.addEventListener("click", function (event) {
                         if (event.target.classList.contains("btnRemoveProduct")) {
@@ -86,6 +97,69 @@
             });
     }
 
+
+    function setupEditingHandlers(list) {
+        const editButtons = document.querySelectorAll('.btnEdit');
+        const saveButtons = document.querySelectorAll('.btnSave');
+    
+        editButtons.forEach((button, index) => {
+            button.addEventListener('click', function () {
+                const row = button.closest('.rij');
+                const editFields = row.querySelectorAll('.editable');
+                
+                editFields.forEach(field => {
+                    field.contentEditable = 'true';
+                });
+                
+                button.style.display = 'none';
+                saveButtons[index].style.display = 'block';
+            });
+        });
+    
+        saveButtons.forEach((button, index) => {
+            button.addEventListener('click', function () {
+                const row = button.closest('.rij');
+                const editFields = row.querySelectorAll('.editable');
+                
+                const updatedNaam = editFields[0].innerText;
+                const updatedCode = editFields[1].innerText;
+                const updatedBeschrijving = editFields[2].innerText;
+                const projectId = list[index].project_id;
+    
+                updateProject(updatedNaam, updatedCode, updatedBeschrijving, projectId);
+    
+                editFields.forEach(field => {
+                    field.contentEditable = 'false';
+                });
+    
+                button.style.display = 'none';
+                editButtons[index].style.display = 'block';
+            });
+        });
+    }
+    
+
+    function updateProject(updatedNaam, updatedCode, updatedBeschrijving, projectId) {
+        // Construct the URL and data for the update request
+        let url = baseApiAddress + "UpdateProject.php";
+        opties.body = JSON.stringify({
+            naam: updatedNaam,
+            code: updatedCode,
+            beschrijving: updatedBeschrijving,
+            project_id: projectId
+        });
+        fetch(url, opties)
+            .then(function (response) {
+                if (response.ok) {
+                    console.log("Value updated successfully.");
+                } else {
+                    console.error("Failed to update value.");
+                }
+            })
+            .catch(function (error) {
+                console.error("Network error: " + error);
+            });
+    }
 
 
     function deleteProject(projectId) {
@@ -199,9 +273,7 @@
     }
 
 
-
-
-    function VerwijderMedeProject(){
+    function VerwijderMedeProject() {
         let url = baseApiAddress + "VerwijderMedeProject.php"
 
         let werkerId = document.getElementById("mede_id").value;
@@ -229,22 +301,14 @@
             });
     }
 
-    function saveChange() {
-        const content = document.querySelectorAll('.rij');
-    }
-
-    document.getElementById("btnAddMedeToProject").addEventListener("click", function (){
+    document.getElementById("btnAddMedeToProject").addEventListener("click", function () {
         toewijznMedeProject();
     })
 
-    document.getElementById("btnDeleteMedeToProject").addEventListener("click", function (){
+    document.getElementById("btnDeleteMedeToProject").addEventListener("click", function () {
         VerwijderMedeProject();
     })
 
-
-    document.getElementById("btnSave").addEventListener("click", function () {
-        saveChange();
-    })
 
     document.getElementById("btnToonMedewerkPerProject").addEventListener("click", function () {
         getApi();
