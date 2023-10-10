@@ -9,8 +9,8 @@
     <div id="alert">
 
     </div>
+    <input type="button" name="save" id="btnSave" value="Save">
 
-    <input type="save" name="save" id="btnSave" value="Save">
     <form action="" id="form" method="post">
         <p>Medewerker</p>
         Voornaam: <input type="text" name="name" required id="naam">
@@ -32,7 +32,15 @@
         Omschrijving: <input name="omschrijving" required id="omschrijving">
         <input type="button" name="addProjects" id="btnAddProjects" value="Add projects">
         
+
+        <p>Medewerkers toewijzen aan een project.</p>
+        medewerker_id: <input type="number" name="mede_id" required id="mede_id">
+        project_id: <input type="number" name="pr_id" required id="pr_id">
+        <input type="button" name="medeToPr" id="btnAddMedeToProject" value="Toewijzen">
+        <input type="button" name="medeToPr" id="btnDeleteMedeToProject" value="Verwijder">
+
     </form>
+
 
     
     <span class="button btn" id="btnToonMedewerkPerProject">Medewerker/project</span>

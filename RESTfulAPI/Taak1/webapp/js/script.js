@@ -118,7 +118,7 @@
             });
     }
 
-
+    //add medewerkers
     function getApiAddMedewerkers() {
         let url = baseApiAddress + "WerkerProjectadd.php";
 
@@ -143,6 +143,7 @@
             })
     }
 
+    // add projects
     function getApiAddProjects() {
         let url = baseApiAddress + "Projectsadd.php";
 
@@ -167,11 +168,79 @@
             })
     }
 
+
+
+    function toewijznMedeProject() {
+        let url = baseApiAddress + "ToewijzenMedeProject.php"
+
+        let werkerId = document.getElementById("mede_id").value;
+        let projectId = document.getElementById("pr_id").value;
+
+        opties.body = JSON.stringify({
+            medewerker_id: werkerId,
+            project_id: projectId
+
+        });
+
+        fetch(url, opties)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (responseData) {
+                if (responseData.status == "ok") {
+                    alerter("Werker toegewijzen naar de project");
+                } else {
+                    alerter("Gefaald om werkers toe te wijzen naar een project");
+                }
+            })
+            .catch(function (error) {
+                alerter("API Error. Please try again later. (" + error + ")");
+            });
+    }
+
+
+
+
+    function VerwijderMedeProject(){
+        let url = baseApiAddress + "VerwijderMedeProject.php"
+
+        let werkerId = document.getElementById("mede_id").value;
+        let projectId = document.getElementById("pr_id").value;
+
+        opties.body = JSON.stringify({
+            medewerker_id: werkerId,
+            project_id: projectId
+
+        });
+
+        fetch(url, opties)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (responseData) {
+                if (responseData.status == "ok") {
+                    alerter("Werker verwijder van uit de project");
+                } else {
+                    alerter("Gefaald om werkers uit de project te halen.");
+                }
+            })
+            .catch(function (error) {
+                alerter("API Error. Please try again later. (" + error + ")");
+            });
+    }
+
     function saveChange() {
         const content = document.querySelectorAll('.rij');
-
-
     }
+
+    document.getElementById("btnAddMedeToProject").addEventListener("click", function (){
+        toewijznMedeProject();
+    })
+
+    document.getElementById("btnDeleteMedeToProject").addEventListener("click", function (){
+        VerwijderMedeProject();
+    })
+
 
     document.getElementById("btnSave").addEventListener("click", function () {
         saveChange();
