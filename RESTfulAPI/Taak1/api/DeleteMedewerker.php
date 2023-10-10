@@ -13,7 +13,7 @@ if (!$stmt = $conn->prepare("delete from medewerker where medewerker_id = ?")) {
     die('{"error":"Prepared Statement failed on prepare","errNo":"' . json_encode($conn->errno) . '","mysqlError":"' . json_encode($conn->error) . '","status":"fail"}');
 }
 
-if (!$stmt->bind_param("i", htmlentities($postvars['project_id']))) {
+if (!$stmt->bind_param("i", htmlentities($postvars['medewerker_id']))) {
     die('{"error":"Prepared Statement bind failed on bind","errNo":"' . json_encode($stmt->errno) . '","mysqlError":"' . json_encode($stmt->error) . '","status":"fail"}');
 }
 
