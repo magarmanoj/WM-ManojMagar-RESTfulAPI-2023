@@ -139,26 +139,28 @@
 
         fetch(url)
             .then(function (response) {
-                console.log(response);
                 return response.json();
             })
             .then(function (responseData) {
+                console.log(responseData);
                 var list = responseData.data;
 
                 if (list.length > 0) {
-                    var tLijst = `<span class="rij btn"><span>Project naam</span><span>code</span><span>beschrijving</span></span>`;
+                    var tLijst = `<span class="rij btn"><span>Project naam</span><span>code</span><span>beschrijving</span><span>voornaam</span><span>specialisatie</span></span>`;
                     for (var i = 0; i < list.length; i++) {
                         tLijst += `<span class="rij"><span>${list[i].naam}</span>
                             <span>${list[i].code}</span>
                             <span>${list[i].beschrijving}</span>
+                            <span>${list[i].voornaam}</span>
+                            <span>${list[i].specialisatie}</span>
                             </span></span>
                         </span>`;
                     }
                     tLijst += "<br>";
 
-                    alerter(tLijst);
+                    alerter2(tLijst);
                 } else {
-                    alerter("Servertijd kon niet opgevraagd worden");
+                    alerter2("Servertijd kon niet opgevraagd worden");
                 }
             })
             .catch(function (error) {
@@ -392,11 +394,14 @@
 
     document.getElementById("btnDetails").addEventListener("click", function () {
         getApiDetails();
+        document.getElementById("alert2").style.display = "block";
+
     })
 
     document.getElementById("btnToonMedewerkPerProject").addEventListener("click", function () {
         getApi();
-        document.getElementById("btnDetails").style.display = "block"; 
+        document.getElementById("btnDetails").style.display = "block";
+        document.getElementById("alert2").style.display = "none";
     })
 
     document.getElementById("btnAddProjects").addEventListener("click", function (e) {
@@ -412,18 +417,22 @@
     document.getElementById("btnLijstProjecten").addEventListener("click", function () {
         getApiProjects();
         document.getElementById("btnDetails").style.display = "none"; 
+        document.getElementById("alert2").style.display = "none";
+
 
     })
 
     document.getElementById("btnLijstMedewerker").addEventListener("click", function () {
         getApiMedewerker();
         document.getElementById("btnDetails").style.display = "none"; 
+        document.getElementById("alert2").style.display = "none";
+
     })
 
     function alerter(message) {
         alertEl.innerHTML = message;
     }
-    function alerter(message) {
+    function alerter2(message) {
         alertEl2.innerHTML = message;
     }
 })();
