@@ -60,14 +60,29 @@
 
                 if (list.length > 0) {
                     // er zit minstens 1 item in list, we geven dit ook onmiddelijk weer
-                    var tLijst = `<span class="rij btn"><span>Id</span><span>Voornaam</span><span>Familienaam</span><span>Specialisatie</span></span>`;
+                    var tLijst = `<span class="rij btn"><span>Id</span><span>voornaam</span><span>familienaam</span><span>specialisatie</span><span>Actions</span><span>....</span></span>`;
                     for (var i = 0; i < list.length; i++) {
-                        tLijst += `<span class="rij"><span>${list[i].medewerker_id}</span><span>${list[i].voornaam}</span><span>${list[i].familienaam}</span><span>${list[i].specialisatie}
-                        </span></span></span></span></span></span>`;
+                        tLijst += `<span class="rij">
+                            <span>${list[i].medewerker_id}</span>
+                            <span class="editable">${list[i].voornaam}</span>
+                            <span class="editable">${list[i].familienaam}</span>
+                            <span class="editable">${list[i].specialisatie}</span>
+                            <span>
+                                <button type="button" class="btnEdit">Edit</button>
+                                <button type="button" class="btnSave" style="display:none;">Save</button>
+                            </span>
+                            <button type="button" data-id="${list[i].medewerker_id}" class="btnRemoveMedewerker">X</button>
+                        </span>`;
                     }
                     tLijst += "<br>";
 
                     alerter(tLijst);
+                    document.addEventListener("click", function (event) {
+                        if (event.target.classList.contains("btnRemoveMedewerker")) {
+                            const medewerkerId = event.target.getAttribute("data-id");
+                            deleteMedewerker(medewerkerId);
+                        }
+                    });
                 } else {
                     alerter("Servertijd kon niet opgevraagd worden");
                 }
@@ -206,12 +221,35 @@
 
         fetch(url, opties)
         .then(function (response) {
-            if (response.status === 200) {
+            if (response.status == 200) {
                 // HTTP status 200 indicates a successful deletion
                 alerter("Project with ID " + projectId + " deleted successfully");
             } else {
                 // Any other HTTP status indicates a failure
                 alerter("Deletion of project with ID " + projectId + " failed");
+            }
+        })
+        .catch(function (error) {
+            // Handle errors
+            alerter("API Error. Please try again later. (" + error + ")");
+        });
+    }
+
+    function deleteMedewerker(medewerkerId){
+        let url = baseApiAddress + "DeleteMedewerker.php";
+
+        opties.body = JSON.stringify({
+            medewerker_id: medewerkerId
+        });
+
+        fetch(url, opties)
+        .then(function (response) {
+            if (response.status == 200) {
+                // HTTP status 200 indicates a successful deletion
+                alerter("Medewerker with ID " + medewerkerId + " deleted successfully");
+            } else {
+                // Any other HTTP status indicates a failure
+                alerter("Deletion of medewerker with ID " + medewerkerId + " failed");
             }
         })
         .catch(function (error) {
