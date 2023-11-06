@@ -9,7 +9,7 @@ define ('INDEX', true);
 require 'inc/dbcon.php';
 require 'inc/base.php';
 
-// update projecten
+// update medewerkers
 if(!$stmtproject = $conn->prepare("update medewerker set voornaam = ?, familienaam = ?, specialisatie = ? WHERE medewerker_id = ?")){
     die('{"error":"Prepared Statement failed on prepare","errNo":"' . json_encode($conn -> errno) .'","mysqlError":"' . json_encode($conn -> error) .'","status":"fail"}');
 }

@@ -210,7 +210,6 @@
     
 
     function updateProject(updatedNaam, updatedCode, updatedBeschrijving, projectId) {
-        // Construct the URL and data for the update request
         let url = baseApiAddress + "UpdateProject.php";
         opties.body = JSON.stringify({
             naam: updatedNaam,
@@ -258,7 +257,7 @@
                 const updatedNaam = editFields[0].innerText;
                 const updatedfamilienaam = editFields[1].innerText;
                 const updatedSpecialisatie = editFields[2].innerText;
-                const medewerkerId = list[index].project_id;
+                const medewerkerId = list[index].medewerker_id;
     
                 updateMedewerker(updatedNaam, updatedfamilienaam, updatedSpecialisatie, medewerkerId);
     
@@ -284,6 +283,7 @@
         fetch(url, opties)
             .then(function (response) {
                 if (response.ok) {
+                    console.log(medewerkerId);
                     console.log("Value updated successfully.");
                 } else {
                     console.error("Failed to update value.");
